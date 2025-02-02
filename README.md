@@ -1,4 +1,4 @@
-# Haskell-Notes
+# HASKELL-Notes
 
 # data vs newtype vs type in Haskell
 
