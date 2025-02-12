@@ -48,11 +48,23 @@ import Text.Read
 data Choice = Rock | Paper | Scissors
 
 
+-- more defining show class for choice. 
+
+-- GhCI >> show Rock
+-- No instance for (Show Choice) arising from a use of `show'
+-- In the expression: show Rock
+-- In an equation for `it_a45J0': it_a45J0 = show Rock
+
+
 instance Show Choice where 
     show :: Choice -> String
     show Rock = "r"
     show Paper = "p"
     show Scissors = "s"
+
+
+-- >>> show Rock
+-- "r"
 
 -- ghci> Rock
 -- r
@@ -63,6 +75,16 @@ instance Show Choice where
 -- ghci> show ['a' , 'b']
 -- "\"ab\""
 
+
+-- ghci> show ['a' , 'b']
+-- "\"ab\""
+-- ghci> ['a' , 'b']
+-- "ab"
+
+
+
+----------- read ------------------------
+--------------------------------------------
 
 
 -- ghci> :t read
@@ -85,10 +107,18 @@ instance Show Choice where
 -- [1,2,3,4,5,6]
 
 
------------ redMaybe ------------------------
+
+
+
+----------- readMaybe ------------------------
 --------------------------------------------
 
 -- readMaybe is a safe way to parse a String into a value of a specified type. It is part of the Text.Read module and is preferred over the standard read function when you want to avoid runtime errors caused by parsing failures.
+
+-- ghci> read "134" :: Int
+-- 134
+
+
 
 
 -- ghci> readMaybe "False" :: Maybe Bool

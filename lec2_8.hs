@@ -70,3 +70,13 @@ reverse :: [a] -> [a]
 reverse [] = [] 
 reverse (x : xs) = reverse xs ++ [x]
 
+
+
+take :: Int -> [a] -> [a]
+take _ [] = [] 
+take n (x : xs) = if n <= 0 then [] else x : (take (n-1) xs) 
+
+-- >>> take 4 [1,2,3,4,56,7,6,5]
+-- [1,2,3,4]
+
+

@@ -28,9 +28,15 @@ and (x: xs) = x && and xs
 
 
 
+-----------------------------------
+-- Generalizing the function 
+------------------------------------
+
 fun :: (a->r -> r) -> r -> [a] -> r 
 fun _cons nil [] = nil 
 fun cons nil (x : xs) = cons x (fun cons nil xs) 
+
+-- we can implement and elem function using this fun. 
 
 -- x: Represents the current element of the list being processed.
 -- nil : Represents the accumulated result so far (starting with False for elem').
@@ -41,8 +47,23 @@ fun cons nil (x : xs) = cons x (fun cons nil xs)
 
 -- Eq a: The type a must belong to the Eq typeclass, meaning elements of type a can be compared for equality (using ==).
 
+
+
+
+-------------------------------------
+-- Try to implement the elem using fun 
+-------------------------------------
+
+
 elem' :: Eq a => a -> [a] -> Bool
 elem' y xs = fun (\x r -> y == x || r) False xs
+
+-- here we redefine elem find using fun . 
+-- here y is value we file and xs is list. 
+-- for fun we have to pass three things. a function that has previous till value , and list. so that final previous till value return when list is empty. 
+-- so first we pass in fun --> a function that take two value that is -> x that is current value and r that is prvious till value. and a false value means we not get value till now. and list. 
+-- so if we find the value then it make r value true. and once it is true. it will true till end. and finally return true.  
+
 
 -- x: The current element of the list being processed.
 -- r: The accumulated result so far (initially False).
@@ -52,7 +73,32 @@ elem' y xs = fun (\x r -> y == x || r) False xs
 
 
 map' :: (a->b) -> [a] -> [b]
-map' f = fun (\x r -> f x : r) []
+map' f xs = fun (\x r -> f x : r) [] xs
+
+-- >>> map' (+1) [1,2,34,3,4]
+-- [2,3,35,4,5]
+
+
+-- map' (+1) [1,2,3]
+-- = fun (\x r -> (x+1) : r) [] [1,2,3]
+
+-- -- Expanding fun
+-- = (\1 r -> (1+1) : r) (fun (\x r -> (x+1) : r) [] [2,3])
+-- = (1+1) : (fun (\x r -> (x+1) : r) [] [2,3])
+-- = 2 : (fun (\x r -> (x+1) : r) [] [2,3])
+
+-- = 2 : ((\2 r -> (2+1) : r) (fun (\x r -> (x+1) : r) [] [3]))
+-- = 2 : (3 : (fun (\x r -> (x+1) : r) [] [3]))
+
+-- = 2 : (3 : ((\3 r -> (3+1) : r) (fun (\x r -> (x+1) : r) [] [])))
+-- = 2 : (3 : (4 : fun (\x r -> (x+1) : r) [] []))
+
+-- -- Base case: fun _ nil [] = nil
+-- = 2 : (3 : (4 : []))
+-- = [2,3,4]
+
+
+
 
 and' :: [Bool] -> Bool
 and' = fun (\x r -> x && r) True 
@@ -78,6 +124,21 @@ and' = fun (\x r -> x && r) True
 -- True  -- The "and" of an empty list is `True` by definition.
 
 
+sum' :: [Int] -> Int 
+sum' xs = fun (\x r -> x + r) 0 xs 
+
+
+-- >>> sum' [1,2,3,4,5]
+-- 15
+
+
+length' :: [a] -> Int 
+length' [] = 0 
+length' xs = fun (\_x r -> 1+ r) 0 xs 
+
+
+-- >>> length' [1,2,3,4,5,4]
+-- 6
 
 -- This function is called Foldr
 -- It's used to reduce or fold a list into a single result by applying a binary function. The "r" in foldr stands for right because it processes the list from right to left.
@@ -111,6 +172,8 @@ map2 f = foldr (\x r -> f x : r) []
 
 and2 :: [Bool] -> Bool
 and2 = foldr (&&) True
+
+
 
 
 -- How It Works:

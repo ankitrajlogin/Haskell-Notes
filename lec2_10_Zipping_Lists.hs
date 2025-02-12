@@ -28,6 +28,15 @@ zipWith f (x : xs) (y : ys) = f x y : zipWith f xs ys
 -- ghci> zipWith (:) "Hw" ["ello" , "orld"]
 -- ["Hello","world"]
 
+-- ghci> zipWith (\x y -> x + y) [1,3,4,5,4][3,5,56,3,43]
+-- [4,8,60,8,47]
+
+-- ghci> zipWith (+)  [1,3,4,5,4][3,5,56,3,43]
+-- [4,8,60,8,47]
+
+
+
+
 -- we can apply zip with zipWith
 zip' :: [a] -> [b] -> [(a,b)] 
 zip' a b = zipWith (,) a b

@@ -13,7 +13,7 @@ reverse :: [a] -> [a]
 reverse [] = [] 
 reverse (x : xs) = reverse xs ++ [x]
 
--- Why It Is Slow
+-- Why It Is Slow ( Lazy evaluation )
 -- The slowness comes from the use of ++ (list concatenation), which has a time complexity of O(n), where n is the length of the first list in the concatenation.
 
 -- Breaking Down the Cost:
@@ -41,7 +41,19 @@ reverse_fast ax = reverseAux [] ax
 
 -- or reverse_fast = reverseAux []  
 
+-- Explanation:
+-- Accumulator (acc): Instead of appending to the list after each recursive call, we maintain an accumulator that collects the reversed elements as we go through the original list.
+-- Tail Recursion: This version of reverse is tail-recursive, meaning the function can be optimized by the compiler to avoid building up a call stack. Each recursive call processes one element and passes the result forward in the accumulator.
+-- Linear Time: This approach runs in O(n) time because there’s no repeated traversal of the list. Each element is added to the accumulator exactly once.
 
+
+
+-- int this , first list is accumulator , which appending the value from the original one and appending.  
+reverseAux2 :: [a] -> [a] -> [a]
+-- when list is empty , all value in acc is equal 
+reverseAux2 acc [] = acc 
+reverseAux2 acc (x : xs) = reverseAux2 (x : acc) xs 
+-- in this , we taking first value from the list and adding in the accumulator , using this, we finally remove from original list and adding in accumulator. 
 
 
 

@@ -12,3 +12,78 @@
 -- [1,0,-1,-2,-3]
 -- ghci> map (-2) [1..5]
 
+
+
+
+
+
+------------------------------------
+-- Find an invocation of filter that finds all non-empty lists in a list of lists.
+------------------------------------
+
+filter_list :: [[a]] -> [[a]] 
+filter_list [] = [] 
+filter_list (x : xs) = if null x then  filter_list xs else x : filter_list xs 
+
+-- >>> filter_list [[] , [2134,234,234] , []]
+-- [[2134,234,234]]
+
+
+
+
+--------------------
+-- ghci> :t id
+-- id :: a -> a
+
+-- What does id do?
+-- id is the identity function.
+-- It returns whatever it is given unchanged.
+
+
+-- Step 3: What Does filter id Do?
+-- Since filter keeps elements where the function returns True, filter id simply removes False values and keeps only True values.
+
+
+
+-------------------------------------
+-- self test 
+---------------------------------------
+-- ghci> filter (/=0) [2,4,6,0,8,0,0,9,8]
+-- [2,4,6,8,9,8]
+
+
+
+
+-- ghci> :t map (3 `elem`)
+-- map (3 `elem`) :: [[Int]] -> [Bool]
+
+
+-- ghci> map (3 `elem`) [[1,2,3], [4,5,6], [3,7,8], []]
+-- [True,False,True,False]
+
+-- ghci> 2 : []
+-- [2]
+
+
+
+
+-- (: [])	a -> [a]	Wraps an element in a single-element list.
+-- ([] :)	[[a]] -> [[a]]	Prepends [] to a list of lists.
+
+
+-- >>> (: []) 23  -- correct way to write this.
+-- [23]
+
+-- >>> map (: []) [1,2,3]
+-- [[1],[2],[3]]
+
+
+-- >>> [] : [2,3,4]
+-- No instance for (Num [()]) arising from a use of `it_a5D7h'
+-- In the first argument of `evalPrint', namely `it_a5D7h'
+-- In a stmt of an interactive GHCi command: evalPrint it_a5D7h
+
+-- >>> [] : [[1,2]]
+-- [[],[1,2]]
+
+

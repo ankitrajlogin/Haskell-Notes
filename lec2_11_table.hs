@@ -24,6 +24,17 @@ lookup _key [] = error "key not found"
 lookup key ((key' , val) : table) = if key == key' then val  else lookup key table
 
 
+-- ghci> lookup 4 example 
+-- "*** Exception: key not found
+-- CallStack (from HasCallStack):
+--   error, called at lec2_11.hs:23:18 in main:Functions
+
+-- key not found , then it giving error and crash the file. 
+
+
+
+
+
 -- other types to write. 
 lookup' :: Eq key => key -> [(key, val)]  -> val 
 lookup' _key [] = error "key not found"

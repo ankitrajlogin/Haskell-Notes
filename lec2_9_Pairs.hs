@@ -11,6 +11,9 @@ import Prelude hiding (fst , uncurry)
 data Pair a b = Pair a b
     deriving Show 
 
+-- >>> Pair 'x' True 
+-- Pair 'x' True
+
 -- or 
 
 -- data Pair a b = MkPair a b
@@ -89,11 +92,21 @@ plus' x y = x + y
 uncurry :: (a->b->c) -> (a,b)->c -- again think. ß
 uncurry f (x ,y) = f x y
 
+
+multiply :: Int -> Int -> Int
+multiply x y = x * y
+
+
 -- we can use like this. 
 plusN :: (Int , Int) -> Int
 plusN (x , y) = uncurry (+) (x,y)
 
 
 -- another way to define uncurry 
+
+
+-- ghci> uncurry multiply (3,4)
+-- 12
+
 
 

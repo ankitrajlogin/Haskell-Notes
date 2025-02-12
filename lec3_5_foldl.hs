@@ -33,16 +33,33 @@ length = lengthAux 0
 
 
 foldl' :: (r -> a -> r) -> r -> [a] -> r
-foldl' upd ini = go ini 
+foldl' cons ini = fun ini 
     where 
-        go !acc [] = acc 
-        go !acc (x : xs) = go (upd acc x) xs 
+        fun !acc [] = acc 
+        fun !acc (x : xs) = fun (cons acc x) xs 
+
+
+-- Hence 
+-- The main difference between foldr and foldl is 
+-- foldl' :: (r -> a -> r) -> r -> [a] -> rs
+-- foldr :: (a->r -> r) -> r -> [a] -> r   --> it preserve the order. 
 
 
 -- Similarly we can add all the things as well. 
 
 reverse' :: [a] -> [a]
 reverse' = foldl' (\ acc x -> x : acc) []
+
+
+-- foldl (\acc x -> x : acc) [] [1,2,3]
+-- = foldl (\acc x -> x : acc) [1] [2,3]
+-- = foldl (\acc x -> x : acc) [2,1] [3]
+-- = foldl (\acc x -> x : acc) [3,2,1] []
+-- = [3,2,1]
+
+
+
+
 
 
 flip :: (a->b->c) -> b->a->c 
@@ -111,18 +128,18 @@ foldr cons nil (x : xs) = cons x (foldr cons nil xs)
 
 
 foldl'' :: (r -> a -> r) -> r -> [a] -> r
-foldl'' upd ini = go ini 
+foldl'' cons ini = fun ini 
     where 
-        go !acc [] = acc 
-        go !acc (x : xs) = go (upd acc x) xs 
+        fun !acc [] = acc 
+        fun !acc (x : xs) = fun (cons acc x) xs 
 
 
---  foldl' upd ini [x,y,z]
--- = foldl' upd ini (x : (y : (z: [])))
--- = go ini (x : (y : (z: [])))
--- = go (ini 'upd' x) (y : z : [])
--- = go ((int 'upd' x) 'upd' y) (z : [])
--- = go (((ini 'upd' x) 'upd' y) 'upd' z) []
--- = (((ini 'upd' x) 'upd' y) 'upd' z)
+--  foldl' cons ini [x,y,z]
+-- = foldl' cons ini (x : (y : (z: [])))
+-- = fun ini (x : (y : (z: [])))
+-- = fun (ini 'cons' x) (y : z : [])
+-- = fun ((int 'cons' x) 'cons' y) (z : [])
+-- = fun (((ini 'cons' x) 'cons' y) 'cons' z) []
+-- = (((ini 'cons' x) 'cons' y) 'cons' z)
 
 

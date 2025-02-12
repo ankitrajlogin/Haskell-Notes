@@ -51,6 +51,7 @@ instance Eq a => Eq [a] where
 
 
 --- Starting from here. 
+-- Our one implementation of Ord class. 
 
 
 class Eq a => Ord a where 
@@ -64,12 +65,18 @@ instance Ord Bool where
     True <= y = y 
 
 
-
+-- defining for instance of Eq so that i can use it in Ord one. 
 instance Eq a => Eq (Maybe a) where 
+    Nothing == Nothing = True 
+    Just x == Just y = x == y 
+    _ == _ = False 
 
 
 
 instance Ord a => Ord (Maybe a) where 
+    Nothing <= _ = True  -- Nothing is considered less than any value of type `Maybe a`
+    Just x <= Just y = x <= y  -- Compare the values inside `Just`
+    _ <= _ = False  -- Any `Just` value is greater than `Nothing`
 
 
 
@@ -118,6 +125,17 @@ instance Ord a => Ord (Maybe a) where
 -- [1,5,9,13,17,21,25,29,33,37,41,45,49,53,57,61,65,69,73,77,81,85,89,93,97]
 
 
+-- >>> [5..1]
+-- []
+
+
+-- >>> [1..5]
+-- [1,2,3,4,5]
+
+
+-- >>> enumFromTo 2 6
+-- [2,3,4,5,6]
+
 
 
 
@@ -148,3 +166,16 @@ instance Ord a => Ord (Maybe a) where
 
 -- ghci> minBound :: (Char , Bool , Int)
 -- ('\NUL',False,-9223372036854775808)
+
+
+
+
+
+
+-- how it is actually define . s
+
+-- class Bounded a where
+--     minBound :: a  -- The minimum value of type `a`
+--     maxBound :: a  -- The maximum value of type `a`
+
+

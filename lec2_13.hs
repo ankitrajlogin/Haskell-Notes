@@ -3,6 +3,8 @@ module Functions where
 
 import Prelude hiding (lookup)
 
+import Control.Applicative 
+
 example :: [(Int , String)]
 example =
     [
@@ -38,11 +40,16 @@ lookup key ((key' , val) : table)
 
 -- Maybe have two value, one -> Nothing , 2nd one -> Just x 
 
+
+--------------------------------------
+-- way to handle the nothing is default value 
+--------------------------------------
+
 -- for just x = x , for nothing def is used that is nothing. 
 
 fromMaybe :: a -> Maybe a -> a
-fromMaybe def Nothing = def
-fromMaybe _def (Just x) = x
+fromMaybe default_val Nothing = default_val
+fromMaybe _default_val (Just x) = x
 
 -- outputs : 
 
@@ -58,6 +65,17 @@ fromMaybe _def (Just x) = x
 -- ghci> fromMaybe "None of the above" Nothing
 -- "None of the above"
 
+-- >>> fromMaybe "unknown" (lookup 3 example) 
+-- "saham"
+
+-- >>> fromMaybe "Unknown" (lookup 4 example)
+-- "Unknown"
+
+
+
+
+--------------------------------
+---------------------------------------------
 
 mapMaybe :: (a -> b ) -> Maybe a -> Maybe b -- available more generally as fmap or (<$>)
 mapMaybe _f Nothing = Nothing
@@ -68,6 +86,14 @@ mapMaybe f (Just x) = Just (f x)
 -- ghci> mapMaybe reverse (lookup 3 example)
 -- Just "mahas"
 
+-- >>> fmap (+1) (Just 3)
+-- Just 4
+
+
+
+---------------------------------------------
+-- orelse  --> when first fail , then we use second one , and second one also fail, then nothing. 
+---------------------------------------------
 
 orelse :: Maybe a -> Maybe a -> Maybe a -- available more generally as (<|>)
 orelse Nothing y = y
@@ -83,3 +109,20 @@ orelse (Just x) _ = Just x
 
 
 
+-- >>> orelse (lookup 17 example) (lookup 22 example2)
+-- Nothing
+
+
+
+----------------------------------------
+-- generalize version of orelse  (<|>)
+-----------------------------------------
+
+-- <|> :: Maybe a -> Maybe a -> Maybe a -- available more generally as (<|>)
+-- <|> Nothing y = y
+-- <|> (Just x) _ = Just x 
+
+
+
+-- >>> lookup 17 example <|> lookup 21 example2
+-- Just "sunita"

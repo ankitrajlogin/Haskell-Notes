@@ -94,7 +94,37 @@ x :: InList
 x = [234,234,234,234]
 
 
-
+type Testerval  = Int 
 
 ---- Final Call --------
+
+
+--------------------------------
+
+-- data tester_val = Int
+
+
+-- Issues in Your Code
+-- The problem here is that Int is already a built-in type in Haskell.
+-- This definition makes Int a constructor, which conflicts with Haskell’s built-in Int type.
+-- Also, the tester_val type does not allow storing actual integer values
+
+
+
+-- Correcting the Code
+-- If you want a custom data type that can store an integer value, you should do:
+
+data TesterVal = TesterInt Int  -- Constructor that wraps an Int
+    deriving Show
+
+
+-- Best approach :
+
+newtype TesterValue = TesterIntval Int
+    deriving Show
+
+-- This is a valid approach, and in this case, it's actually preferable to data because:
+
+-- newtype introduces zero runtime overhead (GHC treats TesterVal just like Int under the hood).
+-- You only have one constructor (TesterInt), making newtype a great fit.
 

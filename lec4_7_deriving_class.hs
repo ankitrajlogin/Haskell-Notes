@@ -34,6 +34,10 @@ data Choice = Rock | Paper | Scissors
 -- False
 
 
+
+
+
+
 -- ghci> :i Bool
 -- type Bool :: *
 -- data Bool = False | True
@@ -63,8 +67,9 @@ data Choice = Rock | Paper | Scissors
 
 
 
-
+------------------------------------------
 ---- Tree ----------------
+------------------------------------------
 
 data Tree a = Leaf a | Node (Tree a) (Tree a)
     deriving (Eq , Ord , Show , Read) 
@@ -73,6 +78,9 @@ data Tree a = Leaf a | Node (Tree a) (Tree a)
 -- For Tree, there is no natural way to define what the "next" or "previous" tree is. Consider:
 
 -- What is the "successor" of a Leaf a?
+-- any this use leaf as less priority as compare to node as node written after leaf 
+
+
 -- What is the "successor" of a Node (Tree a) (Tree a)?
 
 
@@ -113,12 +121,18 @@ tree3 = Node (Leaf "hello") (Node (Leaf "world") (Leaf "Haskell"))
 -- these are the instance for deriving class. 
 
 
+--  Here , Ord (Tree a) can only have instance when their is instance of Ord a is exist. 
 
+
+------------------------------------------
 -- Function Making -----------
+------------------------------------------
 
 
 data WrappedIntFunction = MKFunction (Int ->Int)
     -- deriving (Eq , Ord, Show , Read)
+
+-- for this , we can not deriving these class type because : 
 
 -- 1. Eq:
 -- The Eq typeclass requires an implementation of (==) to compare two values for equality.
@@ -140,5 +154,6 @@ data WrappedIntFunction = MKFunction (Int ->Int)
 -- type WrappedIntFunction :: *
 -- data WrappedIntFunction = MKFunction (Int -> Int)
 --         -- Defined at lec4_7.hs:106:1
+
 
 

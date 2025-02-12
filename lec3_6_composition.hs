@@ -3,7 +3,7 @@
 
 module Folds where
 
-import Prelude hiding (reverse ,  elem  , and , foldr  ,flip , (.) , id , ($)) 
+import Prelude hiding (reverse ,  elem  , and , foldr  ,flip , (.) , id , ($), and ) 
 
 
 sumEvenSquares :: [Int] -> Int
@@ -18,8 +18,8 @@ sumEvenSquares xs = sum (map (\x -> x*x) (filter even xs))
 
 (.) :: (b->c) -> (a->b) -> a->c 
 (f . g) x  =  f (g x) 
-
 -- or f . g = \x -> f (g x) 
+
 
 -- so we can write sumEvenSquares function using . operator. 
 
@@ -31,12 +31,24 @@ sumEvenSquares' = sum . map (\x -> x*x) . filter even
 countLongerThanFive :: [[a]] -> Int
 countLongerThanFive xs = length (filter (\x -> length x > 5) xs)
 
--- countLongerThanFive = length . filter (\x -> length x >=5) 
--- countLongerThanFive = length . filter (\x -> (\y -> y>=5) (length x))
+-- countLongerThanFive xs = length . filter (\x -> length x >=5) xs
+-- countLongerThanFive xs = length . filter (\x -> (\y -> y>=5) (length x)) xs
 
--- countLongerThanFive = length . filter (\x -> (>= 5) (length x))
+-- countLongerThanFive xs = length . filter (\x -> (>= 5) (length x)) xs
 
--- countLongerThanFive = length . filter ((>=5) . length) 
+-- countLongerThanFive xs = length . filter ((>=5) . length)  xs
+
+
+
+-- Understanding the syntax (\x -> length x > 5) 
+
+-- \x -> defines a lambda function that takes one argument x.
+-- length x > 5 is the body of the function, which:
+-- Computes length x (the number of elements in x).
+-- Compares it to 5 (> 5), producing a Boolean value (True or False).
+
+
+
 
 
 
@@ -50,8 +62,48 @@ id :: a -> a
 id x = x
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+-- ghci> :t all 
+-- all :: Foldable t => (a -> Bool) -> t a -> Bool
+
+and :: [Bool] -> Bool 
+and = all id 
+
+
+
+-----------------------------------------
+-- Application operator  ($) 
+-----------------------------------------
+
 ($) :: (a->b) -> a->b
 f $ x = f x 
+
+-- Why Use ($)?
+-- 1. Eliminating Parentheses
+-- Compare these two expressions:
+
+-- Without ($) (lots of parentheses):
+
+-- print (sum (map (*2) [1,2,3,4]))
+
+-- print $ sum $ map (*2) [1,2,3,4]
+
+
+-- >>> sum $ map (*2) [1,2,3,4]
+-- 20
+
+
 
 
 -- ghci> :t map
@@ -97,3 +149,4 @@ listOfFunctions = [(+1) , (*2) , (+7) , (*4)]
 
 -- sumEvenSquares' = sum . map (\x -> x*x) . filter even
 -- sumEvenSquares' = sum $ map (\x -> x*x) $ filter even
+

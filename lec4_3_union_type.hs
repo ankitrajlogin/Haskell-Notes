@@ -16,13 +16,19 @@ import Prelude hiding (reverse ,  elem  , and , foldr  ,flip , (.) , id , ($) , 
 
 
 -- How to Fix it ( Specify the Output Type) 
-parse :: String -> Bool
-parse "False" = False
-parse _       = True 
-
+parseN :: String -> Bool
+parseN "False" = False
+parseN "True"  = True 
+-- parse _ = "Unkknown"  -> we can't do this. 
 
 
 -- Option 2 : Use Either 
+
+
+parse' :: String -> Either Bool String
+parse' "False" =  Left False 
+parse' "True" = Left True 
+parse' _ = Right "Unknown"
 
 -- ghci> :i Either
 -- type Either :: * -> * -> *
@@ -44,6 +50,19 @@ parse3 :: String -> ParseResult
 parse3 "False" = Abool False 
 parse3 "0" = AnInt 0 
 parse3 _ = Astring "Unknown"
+
+
+
+-- data parseVal = Bool | Int | String 
+--     deriving Show 
+
+--     Incorrect Data Constructor Definitions:
+
+-- You wrote Bool | Int | String, but these are already existing types in Haskell.
+-- You need to define constructors that wrap these types instead of using type names directly.
+
+
+
 
 
 

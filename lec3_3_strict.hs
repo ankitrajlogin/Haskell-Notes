@@ -70,3 +70,5 @@ map f (x : xs) = f x : map f xs
 -- A thunk is a deferred computation created by Haskell’s lazy evaluation. Thunks consume memory and can lead to performance degradation if they pile up too much before being evaluated.
 -- 2. Preventing Space Leaks
 -- Space leaks happen when memory usage grows unnecessarily due to unevaluated thunks. Using BangPatterns ensures that values are evaluated as soon as possible, avoiding these leaks.
+
+
