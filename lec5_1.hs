@@ -2,7 +2,9 @@
 
 -- Explicit Effects 
 
+------------------------------------------------
 -- The original motivation for explicit effects
+------------------------------------------------
 -- • Given lazy evaluation as a strategy, the moment of evaluation is not easy to predict and hence not a good trigger for side-effecting actions.
 -- • Even worse, it may be difficult to predict whether a term is evaluated at all.
 
@@ -12,6 +14,7 @@
 
 
 
+------------------------------------------------ß
 module IO where 
 
 import Prelude hiding (getLine)
@@ -31,9 +34,10 @@ program1 =
     in 
         x ++ y 
 
+
 program1' :: String
 program1' = 
-    getLine + getLine 
+    getLine ++ getLine 
 
 
 -- Program 2 ; 
@@ -45,10 +49,11 @@ program2 =
     let 
         x = getLine 
     in
-        x++ x 
+        x ++ x 
 
 
-pgra
+
+
 
 -- program 3 : 
 -- 
@@ -64,4 +69,13 @@ program3 =
 
 
 
-    
+
+
+-- OpenModuleSubstur code is trying to define getLine as a pure function returning a String, but getLine in Haskell is inherently an impure operation because it interacts with the outside world (i.e., reads user input). This causes problems in your programs because Haskell doesn't execute effects in a pure context.
+
+-- Issues with Your Code
+-- ---------------------------
+
+-- getLine :: String is defined as a pure value, but it represents an impure operation.
+-- In Haskell, the standard getLine function has type IO String, meaning it returns an IO action that produces a String.
+-- Due to Haskell’s lazy evaluation, getLine is just a variable binding in your case, and calling it multiple times doesn’t actually perform different input operations.

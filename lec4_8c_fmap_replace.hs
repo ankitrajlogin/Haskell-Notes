@@ -5,6 +5,7 @@
 ------------------------------------------------------
 
 
+------------------------------------------------------
 -- 1. <$> (Functor map)
 ------------------------------------------------------
 
@@ -29,6 +30,7 @@
 
 
 
+------------------------------------------------------
 -- 2. <$ (Replace contents)
 -- -------------------------------------
 -- <$ replaces all values inside a functor with a given value, keeping the structure intact.
@@ -60,4 +62,39 @@
 -- Operator	                  Purpose	
 -- <$>	     -->>             Maps a function over a functor	
 -- <$	     -->>             Replaces all values in the functor with a constant
+
+
+
+
+
+
+
+------------------------------------------------------
+-- Use of $ 
+------------------------------------------------------
+-- The $ operator in Haskell is a function application operator. It is used to avoid parentheses and improve code readability.
+
+-- Basic Explanation of $
+
+-- f (g x)  -- g is applied to x first, then f is applied to the result
+
+
+
+-- Using $ instead:
+
+-- f $ g x  -- Equivalent to f (g x), but without parentheses
+
+
+
+-- In other words:
+
+-- f $ g x is the same as f (g x).
+-- $ has low precedence, meaning everything after it is grouped together as an argument to f.
+
+
+
+
+------------------------------------------------------
+------------------------------------------------------
+
 

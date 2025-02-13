@@ -26,6 +26,38 @@ import Data.Ratio
 -- instance Num Word -- Defined in ‘GHC.Num’
 
 
+-- > For num , we have instance of double , float , int , word , so we can use that. 
+
+-- >>> 2 :: Double 
+-- 2.0
+
+-- >>> 2 :: Word
+-- 2
+
+-- >>> 2 :: Char
+-- No instance for `Num Char' arising from the literal `2'
+-- In the expression: 2 :: Char
+-- In an equation for `it_a6FEv': it_a6FEv = 2 :: Char
+
+
+-- ghci> maxBound :: Int
+-- 9223372036854775807
+
+
+---------------------------------
+-- fromInteger
+---------------------------------
+-- ghci > :i fromInteger
+-- type Num :: * -> Constraint
+-- class Num a where
+--   ...
+--   fromInteger :: Integer -> a
+--         -- Defined in ‘GHC.Num’
+
+
+-- >>> fromInteger 34535345 :: Word
+-- 34535345
+
 
 
 
@@ -97,4 +129,5 @@ import Data.Ratio
 
 -- ghci> fromIntegral 3 :: Double
 -- 3.0
+
 
