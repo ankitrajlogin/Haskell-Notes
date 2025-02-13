@@ -1,4 +1,5 @@
 module Monads where 
+import Control.Monad.State
 
 ---------------------------------------------------------------
 -- Understanding Monads and the Bind (>>=) Operator in Haskell
@@ -89,4 +90,103 @@ example2 = Right 16 >>= safeRoot >>= \y -> Right (y * 2)
 
 
 
+
+
 ---------------------------------------------------------------
+-- 4. List Monad (Handles Non-Deterministic Computations)
+---------------------------------------------------------------
+
+
+pairs :: [(Int, Int)]
+pairs = [1,2] >>= \x -> [3,4] >>= \y -> return (x, y)
+
+
+-- Same as list comprehension:
+pairs' = [(x, y) | x <- [1,2], y <- [3,4]]
+
+
+
+
+
+---------------------------------------------------------------
+-- 5. State Monad (Handles State Changes)
+---------------------------------------------------------------
+
+
+
+increment :: State Int Int
+increment = do
+    n <- get
+    put (n + 1)
+    return n
+
+
+example3 :: (Int, Int)
+example3 = runState increment 10  -- Output: (10, 11)
+
+-- >>> example3
+-- (10,11)
+
+
+
+filteredEvens :: [Int]
+filteredEvens = [1,2,3,4] >>= \x -> if even x then [x] else []
+
+-- >>> filteredEvens
+-- [2,4]
+
+
+
+
+
+
+
+---------------------------------------------------------------
+-- Code: Generating Pythagorean Triples Using the List Monad
+---------------------------------------------------------------
+
+
+pythagoreanTriples :: [(Int, Int, Int)]
+pythagoreanTriples =
+    [1..20] >>= \x ->        -- 1st number (x) ranges from 1 to 20
+    [x..20] >>= \y ->        -- 2nd number (y) starts from x to 20
+    [y..20] >>= \z ->        -- 3rd number (z) starts from y to 20
+    if x*x + y*y == z*z      -- Check if (x, y, z) satisfies the Pythagorean theorem
+        then return (x, y, z)  -- If true, include (x, y, z) in the result
+        else []               -- If false, discard it
+
+
+
+-- Step-by-Step Breakdown
+---------------------------------------------------------------
+
+-- Let's expand how this works for small numbers (1 to 5) before generalizing it.
+
+-- First Monad Bind: [1..5] >>= \x -> ...
+
+-- This means x will take values from [1,2,3,4,5] one by one.
+-- First, x = 1, then x = 2, and so on.
+-- Second Monad Bind: [x..5] >>= \y -> ...
+
+-- For each x, y starts from x to 5.
+-- If x = 1, then y will take values [1,2,3,4,5].
+-- If x = 2, then y will take values [2,3,4,5], and so on.
+-- Third Monad Bind: [y..5] >>= \z -> ...
+
+-- For each (x, y), z starts from y to 5.
+-- If (x, y) = (1,2), then z will take values [2,3,4,5].
+-- Filtering with Pythagorean Theorem:
+
+
+-- if x*x + y*y == z*z then return (x, y, z) else []
+
+
+-- output 
+-- [(3,4,5), (6,8,10), (5,12,13), (9,12,15), (8,15,17), (12,16,20)]
+
+
+pythagoreanTriples' :: [(Int, Int, Int)]
+pythagoreanTriples' = [(x, y, z) | x <- [1..20], y <- [x..20], z <- [y..20], x*x + y*y == z*z]
+
+
+

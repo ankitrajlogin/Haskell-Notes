@@ -39,3 +39,24 @@ main = writeFile "lec5_2.txt" "Hello\n\tworld!\n"
 -- "Hello\n\tworld!\n"
 
 
+
+
+
+-----------------------------------
+--  IO() means must retunr IO () 
+-----------------------------------
+
+-- main2 :: IO() 
+-- main2 = "Ankit" 
+
+-- main must be an IO action because it handles input/output.
+-- A String is not an IO action, so "Ankit" alone is invalid.
+-- Use putStrLn to turn a String into an IO () action.
+
+
+
+main2 :: IO () 
+main2 = putStrLn "Hello World" 
+
+
+
