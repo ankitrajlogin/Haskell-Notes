@@ -2,17 +2,44 @@
 module IO where 
 
 import qualified Prelude 
-import Prelude hiding ((>>)) 
+import Prelude hiding ((>>) , liftA2) 
 
 import qualified Control.Applicative
+
+
+-- (>>) :: Monad m => m a -> m b -> m b
+-- ghci> :i (>>)
+-- type Monad :: (* -> *) -> Constraint
+-- class Applicative m => Monad m where
+--   ...
+--   (>>) :: m a -> m b -> m b
+--   ...
+--         -- Defined in ‘GHC.Base’
+-- infixl 1 >>
+
 
 
 (>>) :: IO a -> IO b -> IO b 
 (>>) = (Prelude.>>)
 
 
--- ghci> :t (>>)
+
+-- Type Signature & Explanation
 -- (>>) :: IO a -> IO b -> IO b
+-------------------------------------------------
+-- Breaking it Down
+-- IO a → The first IO action that produces a value of type a (which will be discarded).
+-- IO b → The second IO action that produces a value of type b.
+-- Returns: IO b → The result of the second IO action.
+-- So, (>>) action1 action2 means:
+
+-- Execute action1 but ignore its result.
+-- Then execute action2 and return its result.
+
+
+
+
+
 
 -- ghci> :t getLine >> getLine
 -- getLine >> getLine :: IO String
@@ -21,6 +48,13 @@ import qualified Control.Applicative
 -- foo
 -- gadf
 -- "gadf"
+
+
+-- ghci> getLine>> getLine 
+-- ankit
+-- raj
+-- "raj"
+
 
 
 
@@ -40,12 +74,34 @@ import qualified Control.Applicative
 
 
 
--- Program 1 
--- Read a line and reverse. 
 
--- ghci> fmap reverse getLine
--- hello
--- "olleh"
+
+-- ghci> :t fmap
+-- fmap :: Functor f => (a -> b) -> f a -> f b
+
+
+-- ghci> fmap reverse getLine 
+-- ankit
+-- "tikna"
+
+
+-- NOTE : 
+-------------------------------------
+
+-- fmap applies reverse inside IO
+-- fmap :: (a -> b) -> IO a -> IO b
+
+
+
+
+
+
+
+
+
+
+
+
 
 liftA2 :: (a ->b -> c) -> IO a -> IO b -> IO c
 liftA2 = Control.Applicative.liftA2 

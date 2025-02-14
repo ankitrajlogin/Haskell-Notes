@@ -3,12 +3,16 @@
 
 module IO where 
 
+ 
+import Prelude hiding ((>>) , liftA2)
+
 
 import qualified Control.Applicative
 
 
 (>>) :: IO a -> IO b -> IO b 
-(>>) = liftA2 (\ _ b -> b) 
+(>>) = liftA2 (\ _a b -> b) 
+
 
 liftA2 :: (a->b->c) -> IO a -> IO b -> IO c
 liftA2  = Control.Applicative.liftA2 
@@ -17,6 +21,12 @@ liftA2  = Control.Applicative.liftA2
 -- 3asdf
 -- asdf
 -- "asdf"
+
+-- ghci> :t liftA2
+-- liftA2 :: (a -> b -> c) -> IO a -> IO b -> IO c
+
+
+
 
 program1 :: IO String 
 program1 = 
@@ -27,6 +37,13 @@ program1 =
         liftA2 (++) x y 
 
 
+
+program1' :: IO String 
+program1' = 
+    liftA2 (++) getLine getLine 
+
+
+    
 
 program2 :: IO String 
 program2 = 

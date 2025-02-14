@@ -51,8 +51,11 @@ program2 =
     in
         x ++ x 
 
-
-
+--------------------------------
+-- Why It Fails
+--------------------------------ß
+-- getLine :: IO String, but you're treating x and y as String.
+-- The ++ operator requires two pure String values, but x and y are IO actions, not String.
 
 
 -- program 3 : 

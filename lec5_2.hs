@@ -60,3 +60,18 @@ main2 = putStrLn "Hello World"
 
 
 
+-- ghci> :i () 
+-- type () :: *
+-- data () = ()
+--         -- Defined in ‘GHC.Tuple.Prim’
+-- instance Monoid () -- Defined in ‘GHC.Base’
+-- instance Semigroup () -- Defined in ‘GHC.Base’
+-- instance Bounded () -- Defined in ‘GHC.Enum’
+-- instance Read () -- Defined in ‘GHC.Read’
+-- instance Enum () -- Defined in ‘GHC.Enum’
+-- instance Show () -- Defined in ‘GHC.Show’
+-- instance Eq () -- Defined in ‘GHC.Classes’
+-- instance Ord () -- Defined in ‘GHC.Classes’
+
+
+
