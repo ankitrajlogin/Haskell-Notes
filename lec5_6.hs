@@ -6,7 +6,7 @@ module IO where
 import qualified Control.Applicative 
 
 
-import Prelude hiding (sequence)
+import Prelude hiding (sequence , liftA2)
 
 
 liftA2 :: (a -> b-> c) -> IO a -> IO b -> IO c

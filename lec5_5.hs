@@ -40,7 +40,7 @@ conversation1 =
   >>= \x ->
     if null x
       then putStrLn "Bye!"
-      else putStrLn ("Thanks for the input (" ++ x ++ ").") >> conversation
+      else putStrLn ("Thanks for the input (" ++ x ++ ").") >> conversation1
 
 
 ask :: String -> IO String
