@@ -97,6 +97,10 @@ liftA2' f ioa iob =
 
 
 
+
+
+
+
 -----------------------------------------------------------
 -----------------------------------------------------------
 --  USE OF DO NOTATION FOR THIS SAME TASK
@@ -163,6 +167,18 @@ shoutBackTwice =
     let y = map toUpper x 
     in putStrLn y >> putStrLn y 
 
+-- How It Works
+-----------------------------------------------------------
+
+-- getLine >>= \x ->
+-- Reads input and binds it to x.
+
+-- let y = map toUpper x
+-- Defines y as the uppercase version of x.
+
+-- in putStrLn y >> putStrLn y
+-- Uses y inside the in scope to print it twice.
+
 
 shoutBackTwice' :: IO () 
 shoutBackTwice' = do 
@@ -171,12 +187,36 @@ shoutBackTwice' = do
     putStrLn y 
     putStrLn y 
 
+
+--  not need to write 'in' in do block as value of y already available in next block. 
+
+-- In summary:
+-- In lambda expressions (>>=): let must use in because it's an expression.
+-- In do blocks: let does not need in because it's a statement.
+
+
 shoutBackTwice'' :: IO () 
 shoutBackTwice'' = do 
     x <- getLine 
     y <- return (map toUpper x) 
     putStrLn y 
     putStrLn y 
+
+
+-- return wraps a pure value into an IO action.
+
+-- What Happens Here?
+
+-- x <- getLine
+-- Reads input from the user (IO a) and stores it in x (a).
+
+-- y <- return (map toUpper x)
+-- map toUpper x is a pure computation (not IO).
+-- return wraps it into IO String, so y is extracted like an IO action.
+
+-- putStrLn y
+-- Prints y twice.
+
 
 
 
@@ -223,3 +263,15 @@ loop = do
       loop  -- Recursive call to continue the loop
 
 
+
+
+
+
+
+-- FUN
+
+-- ghci> do do [1,2,3]
+-- [1,2,3]
+
+-- ghci> do ( do 1 +  do do 2)
+-- 3
