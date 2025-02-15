@@ -185,7 +185,7 @@ askNULL q = do
 
 
 --------------------------------------------------
--- NOTE
+-- NOTE (diff between [ IO a ] and IO [a]
 --------------------------------------------------
 
 -- [IO a]	 -->   A list of IO actions that are not executed yet.
