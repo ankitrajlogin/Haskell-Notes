@@ -49,6 +49,60 @@ ask prompt =
   getLine
 
 
+-- ghci> ask "Ankit"
+-- Ankit
+-- rahul
+-- "rahul"
+
+--------------------------------------------------------
+-- Why is "rahul" printed even though you're not explicitly printing it?
+--------------------------------------------------------
+
+-- This happens because in GHCi, when you call ask "Ankit", the result of the IO String action is implicitly printed by GHCi.
+
+-- Let's break it down:
+-- 1. putStrLn prompt prints "Ankit" to the console.
+-- 2. >> sequences the action, discarding the result of putStrLn prompt.
+-- 3. getLine reads input from the user (e.g., "rahul").
+-- 4. Since ask is an IO String, it returns the user input ("rahul").
+-- 5. In GHCi, when an IO action produces a result, GHCi automatically prints it. That's why "rahul" appears on the screen.
+
+
+--------------------------------------------------------
+-- How to prevent GHCi from printing the return value?
+--------------------------------------------------------
+
+-- If you don’t want GHCi to print the returned value, you can explicitly discard it using _ <- ask "Ankit" or run ask "Ankit" >> return () in GHCi.
+
+
+
+-- ghci> _ <- ask "Ankit"
+-- Ankit
+-- rahul
+
+
+liftA2' :: (a-> b -> c) -> IO a -> IO b -> IO c 
+liftA2' f ioa iob = 
+  ioa >>= \ a -> 
+  iob >>= \b -> 
+  return (f a b) 
+
+
+-- ghci> liftA2' (++) getLine getLine 
+-- ankit
+-- rahul
+-- "ankitrahul"
+
+
+
+
+
+-----------------------------------------------------------
+-----------------------------------------------------------
+--  USE OF DO NOTATION FOR THIS SAME TASK
+-----------------------------------------------------------
+-----------------------------------------------------------
+
 
 
 
@@ -60,6 +114,7 @@ conversation2 = do
     else do
       putStrLn ("Thanks for the input (" ++ x ++ ").")
       conversation2  -- Recursive call to continue the conversation
+
 
 ask2 :: String -> IO String
 ask2 prompt = do
@@ -75,13 +130,30 @@ ask2 prompt = do
 
 -- Bye!
 
+testing :: IO String 
+testing = getLine >>= \x -> return ("Hello , " ++ x ++ " ") ; 
 
 
-liftA2' :: (a->b->c) -> IO a -> IO b -> IO c 
-liftA2' f ioa iob = do 
+
+
+liftA2'' :: (a->b->c) -> IO a -> IO b -> IO c 
+liftA2'' f ioa iob = do 
     a <- ioa 
     b <- iob 
     return (f a b) 
+
+
+-- ghci> liftA2' (++) getLine getLine 
+-- ankit
+-- rahul
+-- "ankitrahul"
+
+
+
+-- ghci> liftA2' (++) testing testing
+-- ankit
+-- rahul
+-- "Hello , ankit Hello , rahul "
 
 
 
