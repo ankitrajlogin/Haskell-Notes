@@ -79,5 +79,8 @@ stepCounter :: Counter Int
 stepCounter = MkCounter (\ c -> (c , c + 1)) 
 
 
+
+
+
 -- ghci> labelTree tree5
 -- Bin (Bin Empty ('A',1) Empty) ('B',2) (Bin Empty ('C',3) Empty)
