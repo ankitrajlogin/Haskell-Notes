@@ -82,6 +82,9 @@
 -- instance Functor (Const m) -- Defined in ‘Data.Functor.Const’
 -- instance Functor (Map k) -- Defined in ‘Data.Map.Internal’
 
+
+import Control.Monad (liftM , ap)
+
 newtype Counter a = MkCounter { runCounter :: Int -> (a , Int) }
 
 
@@ -101,28 +104,54 @@ returnCounter :: a -> Counter a
 returnCounter a = MkCounter (\c -> (a , c)) 
 
 
+-----------------------------------------------------------------
+-- Making Counter an Instance of Functor, Applicative, and Monad
+-----------------------------------------------------------------
+
 
 instance Functor Counter where 
-    fmap = undefined 
+    fmap = liftM
+
+
+-- It takes a function f :: a -> b and applies it to the value inside Counter a.
+
+
+
 
 
 instance Applicative Counter where
     pure = returnCounter
     (<*>) = undefined 
 
+
+-- pure is just returnCounter, which wraps a value in a Counter without changing the counter.
+-- (<*>) (applicative apply) isn't defined, but it would allow applying a Counter (a -> b) to Counter a.
+
+
 instance Monad Counter where 
     (>>=) = (>>>>=) 
+
+
+-- This makes Counter a monad, enabling do-notation and sequential operations.
+
+
 
 
 
 -- fmapIO :: (a -> b) -> IO a -> IO b 
 
 
--- already exist in the name of liftM
 
-fmapIO :: Monad m => (t -> b) -> m t -> m b
-fmapIO f comp =
-    comp >>= \a -> pure (f a)
+-- liftM :: Monad m => (t -> b) -> m t -> m b
+-- liftM f comp =
+--     comp >>= \a -> pure (f a)
+
+
+-- This is already exist in the name of liftM
+
+-- ghci> :t Control.Monad.liftM
+-- Control.Monad.liftM :: Monad m => (a1 -> r) -> m a1 -> m r
+
 
 
 

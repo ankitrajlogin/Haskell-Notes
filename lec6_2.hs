@@ -27,17 +27,6 @@ table =
 
 -- If any of the lookups fail, then the whole operation should fail.
 
-lookupTimes :: Int -> Int -> Maybe Int
-lookupTimes i0 times = 
-    case M.lookup i0 table of 
-        Nothing -> Nothing 
-        Just i1 -> 
-            if times <= 0 
-                then Just (i1 + 1)  
-                else lookupTimes i1 (times - 1)  
-
--- ghci> lookupTimes 2 4
--- Just 65
 
 
 
@@ -51,7 +40,8 @@ threeLookups i0 =
             Just i2 -> 
                 case M.lookup i2 table of 
                 Nothing -> Nothing 
-                Just i3 -> Just (i3+1)
+                Just i3 -> 
+                    Just (i3+1)
 
 
 
@@ -64,8 +54,9 @@ threeLookups i0 =
 -- ghci> threeLookups 7
 -- Nothing
 
-
-
+----------------------------------------------------------------
+-- Just creating a function for repeating use. 
+----------------------------------------------------------------
 
 
 fun :: Maybe a -> (a -> Maybe b) -> Maybe b
@@ -74,6 +65,9 @@ fun comp rest =
         Nothing -> Nothing  
         Just x -> rest x  
 
+
+
+
 -- (>>=) :: IO a -> (a -> IO b) -> IO b 
 
 (>>>=) :: Maybe a -> (a-> Maybe b) -> Maybe b 
@@ -81,6 +75,16 @@ comp >>>= rest =
     case comp of
         Nothing -> Nothing 
         Just x -> rest x 
+
+
+-- This function (or operator) takes two arguments:
+
+-- A Maybe a value (comp), which could be:
+-- Nothing
+-- Just x (where x is of type a)
+-- A function (rest) of type (a -> Maybe b), which:
+-- Takes an a
+-- Returns a Maybe b
 
 
 
@@ -92,7 +96,29 @@ threeLookups2 i0 =
     Just(i3 +1) 
 
 
+-- comp is the left-hand Maybe value (like M.lookup iX table).
+-- rest is the right-hand lambda function (\iX -> M.lookup iX table or \i3 -> Just (i3 + 1)).
+-- (>>>=) ensures that if at any step Nothing is encountered, the whole computation stops.
 
 
 
 
+
+
+
+
+--------------------------------------------------
+-- for n time lookup. 
+---------------------------------------------------
+
+lookupTimes :: Int -> Int -> Maybe Int
+lookupTimes i0 times = 
+    case M.lookup i0 table of 
+        Nothing -> Nothing 
+        Just i1 -> 
+            if times <= 0 
+                then Just (i1 + 1)  
+                else lookupTimes i1 (times - 1)  
+
+-- ghci> lookupTimes 2 4
+-- Just 65

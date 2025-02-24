@@ -7,7 +7,7 @@
 module Monads where 
 
 
-import Data.Map.Strict as M
+import qualified Data.Map.Strict as M
 
 
 -- ghci> :t Data.Map.Strict.lookup
@@ -16,6 +16,13 @@ import Data.Map.Strict as M
 -- ghci> :t M.lookup
 -- M.lookup :: Ord k => k -> Map k a -> Maybe a
 
+
+
+
+
+-- M.Map → Refers to the Map type from the Data.Map.Strict module.
+-- Int → Represents the type of keys.
+-- Int → Represents the type of values.
 
 example :: M.Map Int Int
 example = 
@@ -53,3 +60,62 @@ example =
 -- Just 8
 
 
+
+
+
+
+---------------------------------------------------------------
+-- lookup in Haskell: Everything You Need to Know
+---------------------------------------------------------------
+
+-- lookup is a function used to retrieve the value associated with a given key in associative structures like lists of key-value pairs or maps (Data.Map). If the key exists, it returns Just value; otherwise, it returns Nothing.
+
+
+-- lookup :: Eq a => a -> [(a, b)] -> Maybe b
+
+-- a → Key type (must be comparable with Eq).
+-- b → Value type.
+-- [(a, b)] → A list of key-value pairs (an association list).
+-- Maybe b → Returns Just value if key is found, otherwise Nothing.
+
+
+
+main2 :: IO ()
+main2 = do
+    let myList = [(1, "one"), (2, "two"), (3, "three")]
+    print $ lookup 2 myList  -- Just "two"
+    print $ lookup 4 myList  -- Nothing
+
+
+-- ghci> main2
+-- Just "two"
+-- Nothing
+
+
+
+myLookup :: Eq a => a -> [(a,b)] -> Maybe b 
+myLookup _ [] = Nothing 
+myLookup key ((k ,v) : xs) 
+    | key == k = Just v 
+    | otherwise = myLookup key xs 
+
+
+main3 = do
+    let myList = [(1, "one"), (2, "two"), (3, "three")]
+    print $ myLookup 2 myList  -- Just "two"
+    print $ myLookup 4 myList  -- Nothing
+
+-- ghci> main3
+-- Just "two"
+-- Nothing
+
+
+
+
+--------------------------------------------------
+-- Final NOTE 
+--------------------------------------------------
+
+-- lookup is simple but linear in performance (good for small lists).
+-- M.lookup in Data.Map.Strict is faster (O(log n)) and ideal for large datasets.
+-- Always handle Maybe values properly to avoid runtime errors.

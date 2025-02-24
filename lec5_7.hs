@@ -16,4 +16,21 @@ module Random where
 
 
 
+------------------------------------------------------------------------
+-- process of use all package 
+------------------------------------------------------------------------
 
+
+-- 1. cabal init in a directory. 
+
+-- or 1. cabal init -m --lib (predifine all requirement)
+
+-- 2. cat package-demo.calab (see all file) 
+
+-- 3. cabal repl 
+
+-- 4. libaray change to use all 
+-- (build-depends : base , random )
+
+
+-- 5. 

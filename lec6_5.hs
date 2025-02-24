@@ -36,15 +36,49 @@ example =
 labelTree :: BinTree a -> BinTree (a, Int)
 labelTree tree = fst (labelTreeAux tree 1)
 
-labelTreeAux :: BinTree a -> Int -> (BinTree (a, Int), Int)
-labelTreeAux Empty c0 = (Empty, c0)
+
+labelTreeAux :: BinTree a -> Int -> (BinTree (a , Int) , Int) 
+labelTreeAux Empty c0 = (Empty , c0) 
 labelTreeAux (Bin l x r) c0 = 
-    let 
-        (newl, c1) = labelTreeAux l c0 
-        -- c2 = c1 + 1 
-        (newr, c2) = labelTreeAux r (c1 + 1) 
-    in 
-        (Bin newl (x, c1) newr, c2)
+    let
+        (newl , c1) = labelTreeAux l c0 
+        (newr , c2) = labelTreeAux r (c1 +1)  
+    in
+        (Bin newl (x , c1) newr , c2) 
+
+
+-- Breaking Down labelTreeAux Line by Line
+
+-- If the tree is Empty, we return (Empty, c0), meaning the counter remains unchanged.s
+
+-- If we have a node (Bin l x r), we need to:
+-- Label the left subtree first.
+-- Label the current node next.
+-- Label the right subtree last.
+
+
+labelTreeAux' :: BinTree a -> Int -> (BinTree (a , Int) , Int) 
+labelTreeAux' Empty c0 = (Empty , c0) 
+labelTreeAux' (Bin l x r) c0 = 
+    let
+        (newl , c1) = labelTreeAux' l c0 
+        c2          = c1 + 1
+        (newr , c3) = labelTreeAux' r c2  
+    in
+        (Bin newl (x , c1) newr , c3) 
+
+
+
+labelTreeAux'' :: BinTree a -> Int -> (BinTree (a , Int) , Int) 
+labelTreeAux'' Empty c0 = (Empty , c0) 
+labelTreeAux'' (Bin l x r) c0 = 
+    let
+        (newl , c1) = labelTreeAux'' l c0 
+        c2          = c1 + 1
+        (newr , c3) = labelTreeAux'' r c2  
+    in
+        (Bin newl (x , c1) newr , c3)        
+
 
 
 

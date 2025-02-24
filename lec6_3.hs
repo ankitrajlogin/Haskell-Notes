@@ -59,6 +59,28 @@ threeLookups2 i0 =
 
 
 
+
+-- ghci> threeLookups2 5
+-- Just 41
+
+
+
+returnMaybe :: a -> Maybe a 
+returnMaybe x = Just x 
+
+threeLookups2' :: Int -> Maybe Int
+threeLookups2' i0 = 
+    M.lookup i0 table >>>= \i1 -> 
+    M.lookup i1 table >>>= \i2 -> 
+    M.lookup i2 table >>>= \i3 ->
+    returnMaybe (i3 +1)
+
+
+
+-------------------------------------------
+-- writing using do block 
+-------------------------------------------
+
 threeLookups3 :: Int -> Maybe Int
 threeLookups3 i0 = do
     i1 <- M.lookup i0 table 
@@ -66,10 +88,20 @@ threeLookups3 i0 = do
     i3 <- M.lookup i2 table
     return (i3 +1)
 
- 
 
--- ghci> threeLookups2 5
--- Just 41
+-- ghci> threeLookups3 6
+-- Nothing
+
+
+
+--------------------------------------------------
+-- Sequence 
+--------------------------------------------------
+
+-- seqeunce :: [IO a] -> IO [a]
+-- sequence :: [Maybe a] -> Maybe [a]
+
+
 
 -- ghci> :t sequence
 -- sequence :: (Traversable t, Monad m) => t (m a) -> m (t a)
@@ -78,18 +110,24 @@ threeLookups3 i0 = do
 -- Just [3,4,7,10]
 
 
+
+
+
+
+--------------------------------------------------
+-- mapM s
+--------------------------------------------------
+
+
 -- ghci> :t mapM (\ x -> M.lookup x table) [1,2,3,4]
 -- mapM (\ x -> M.lookup x table) [1,2,3,4] :: Maybe [Int]
+
+
+-- ghci>  mapM (\ x -> M.lookup x table) [1,2,3,4]
+-- Just [2,4,6,8]
+
 
 -- ghci> mapM (\ x -> M.lookup x table) [1,2,3,4,5, 6 , 7, 8]
 -- Nothing
 --- (if any one fails , hole lookup will fail) 
-
-
-
-
-
-
-returnMaybe :: a -> Maybe a 
-returnMaybe x = Just x 
 

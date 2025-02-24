@@ -61,6 +61,13 @@ labelTree :: BinTree a -> BinTree (a, Int)
 labelTree tree = 
     fst (runCounter (labelTreeAux tree) 1) 
 
+
+newtype Counter a = MkCounter { runCounter :: Int -> (a , Int) }
+
+stepCounter :: Counter Int
+stepCounter = MkCounter (\c -> (c , c+1)) 
+
+
 labelTreeAux :: BinTree a -> Counter (BinTree (a, Int))
 labelTreeAux Empty = MkCounter (\ c0 -> (Empty, c0))
 labelTreeAux (Bin l x r) = MkCounter (\ c0 -> 
@@ -70,6 +77,21 @@ labelTreeAux (Bin l x r) = MkCounter (\ c0 ->
         (newr , c3) = runCounter (labelTreeAux r) c2 
     in 
         (Bin newl (x, lx) newr, c3))
+
+
+
+-- newtype Counter a = MkCounter { runCounter :: Int -> (a , Int) }
+
+
+(>>>>=) :: Counter a -> (a -> Counter b ) -> Counter b 
+comp >>>>= rest = 
+    MkCounter ( \ c0 ->
+        let
+            (a , c1) = runCounter comp c0 
+        in 
+            runCounter (rest a) c1 
+    
+    )
 
 
 
@@ -84,6 +106,8 @@ labelTreeAux2 (Bin l x r) =
         (Bin newl (x, lx) newr, c3))
 
 
+
+
 labelTreeAux3 :: BinTree a -> Counter (BinTree (a, Int))
 labelTreeAux3 Empty = MkCounter (\ c0 -> (Empty, c0))
 labelTreeAux3 (Bin l x r) = 
@@ -94,6 +118,11 @@ labelTreeAux3 (Bin l x r) =
 
 
 
+
+returnCounter :: a -> Counter a 
+returnCounter a = MkCounter (\c -> (a , c)) 
+
+
 labelTreeAux4 :: BinTree a -> Counter (BinTree (a, Int))
 labelTreeAux4 Empty = returnCounter Empty 
 labelTreeAux4 (Bin l x r) = 
@@ -102,7 +131,7 @@ labelTreeAux4 (Bin l x r) =
     labelTreeAux4 r >>>>= \ newr -> 
     returnCounter (Bin newl (x, lx) newr)
 
-newtype Counter a = MkCounter { runCounter :: Int -> (a , Int) }
+
 
 
 -- stepCounter :: Counter Int 
@@ -111,22 +140,10 @@ newtype Counter a = MkCounter { runCounter :: Int -> (a , Int) }
 
 
 
-(>>>>=) :: Counter a -> (a -> Counter b ) -> Counter b 
-comp >>>>= rest = 
-    MkCounter ( \ c0 ->
-        let
-            (a , c1) = runCounter comp c0 
-        in 
-            runCounter (rest a) c1 
-    
-    )
 
 
-returnCounter :: a -> Counter a 
-returnCounter a = MkCounter (\c -> (a , c)) 
 
 
-stepCounter :: Counter Int
-stepCounter = MkCounter (\c -> (c , c+1)) 
+
 
 
